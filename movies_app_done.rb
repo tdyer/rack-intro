@@ -1,5 +1,8 @@
 require 'rubygems'
 require 'rack'
+require 'pry'
+
+require_relative 'lib/init_app_done'
 
 # Simple Rack Application
 class MoviesApp
@@ -7,19 +10,18 @@ class MoviesApp
   # This 'call' method gets invoked when the HTTP Server
   # recieves a HTTP Request
   def call(env)
-    # The env parameter, which is a Ruby Hash, holds info from the HTTP Request
+    # Let create a HTML page showing all the movies
+    content = '<html><head><title>Favorite Movies</title></head><body><ul>'
 
-
-    # Let create a HTML page showing all the info in the env parameter
-    content = '<html><head><title>HTTP Info</title></head><body><ul>'
-
-    env.each do |key, value|
-      content << "<li>#{key} is #{value} </li>"
-    end
+    # binding.pry
+    if(env['REQUEST_PATH'] == '/movies')
+      Movie.all.each do |id, movie|
+        content << "<li>#{movie.title} was released in #{movie.release_year} </li>"
+      end
     content += '</ul></body></html>'
+    end
 
     # [HTTP Status, Mime-Type, Request Body]
-
     [200, {"Content-Type" => "text/html" }, [content] ]
   end
 end
