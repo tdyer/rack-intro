@@ -16,10 +16,17 @@ class MoviesApp
     # binding.pry
     if(env['REQUEST_PATH'] == '/movies')
       Movie.all.each do |id, movie|
-        content << "<li>#{movie.title} was released in #{movie.release_year} </li>"
+        content << "<li>#{movie.title} with id #{movie.id} was released in #{movie.release_year} </li>"
       end
-    content += '</ul></body></html>'
+    elsif(env['REQUEST_PATH'] =~ /\/movies\/\d+/)
+      id = env['REQUEST_PATH'].split('/')[2]
+      puts "id is #{id}"
+      movie = Movie.find(id.to_i)
+      puts "id is #{id}"
+      content << "<li>#{movie.title} was released in #{movie.release_year} </li>"
     end
+
+    content += '</ul></body></html>'
 
     # [HTTP Status, Mime-Type, Request Body]
     [200, {"Content-Type" => "text/html" }, [content] ]

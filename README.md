@@ -163,3 +163,30 @@ if(env['REQUEST_PATH'] == '/movies')
 end
 ```
 
+## Find a specific Movie by Id
+
+Add the below class method to the lib/movie.rb file.
+
+```ruby
+ # Find a movie given it's id                                                  
+  def Movie.find(id)
+    @@movies[id]
+  end
+```
+
+Add the below code to the application, movie_app.rb.
+
+```ruby
+...
+# See if the PATH matches a URL with /movies/3
+elsif(env['REQUEST_PATH'] =~ /\/movies\/\d+/)
+      id = env['REQUEST_PATH'].split('/')[2]
+      puts "id is #{id}"
+      movie = Movie.find(id.to_i)
+      puts "id is #{id}"
+      content << "<li>#{movie.title} was released in #{movie.release_year} </li\
+
+...      
+>"
+
+```

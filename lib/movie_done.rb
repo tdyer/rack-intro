@@ -41,4 +41,9 @@ class Movie
   def Movie.all
     @@movies
   end
+
+  # Find a movie given it's id
+  def Movie.find(id)
+    @@movies[id]
+  end
 end
